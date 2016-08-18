@@ -53,13 +53,17 @@ status "Generating release phase deploy script to $SALESFORCE_DIR/deploy"
 cp -R $BP_DIR/lib/* $SALESFORCE_DIR/
 cp $BP_DIR/package.json $SALESFORCE_DIR/package.json
 # write script triggering node-based deployment to-be-invoked bin/release
+
 echo "$SALESFORCE_DIR/node/bin/node $SALESFORCE_DIR/force.js release" > $SALESFORCE_DIR/deploy
 chmod +x $SALESFORCE_DIR/deploy
 cat $SALESFORCE_DIR/deploy
 
 status "Generating test phase script to $SALESFORCE_DIR/test"
 # write script to-be-invoked via test phase per app.json
-echo "$SALESFORCE_DIR/node/bin/node $SALESFORCE_DIR/force.js test" > $SALESFORCE_DIR/test
+cat <<EOT >> $SALESFORCE_DIR/test
+#!/usr/bin/env bash
+$SALESFORCE_DIR/node/bin/node $SALESFORCE_DIR/force.js test
+EOT
 chmod +x $SALESFORCE_DIR/test
 cat $SALESFORCE_DIR/test
 
