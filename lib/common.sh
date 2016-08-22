@@ -39,6 +39,10 @@ indent() {
 export_env_dir() {
   whitelist_regex=${2:-$'^(SALESFORCE_|HEROKU_)'}
   blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  echo "$ENV_DIR"
+  echo "$whitelist_regex"
+  echo "$blacklist_regex"
+  ls $ENV_DIR
   if [ -d "$ENV_DIR" ]; then
     for e in $(ls $ENV_DIR); do
       echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
